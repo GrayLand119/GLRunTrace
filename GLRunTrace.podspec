@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "GLRunTrace"
-  s.version      = "1.3.1"
+  s.version      = "1.3.2"
   s.summary      = "RunTrace tracks every UI element, including origin, bounds, frame, superview, subview etc."
 
   s.description  = <<-DESC

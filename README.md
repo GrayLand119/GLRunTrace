@@ -1,16 +1,29 @@
-# RunTrace
+# GLRunTrace
 一个可以实时跟踪分析iOS App视图的小工具.
 
-## 修改
+## 基于 RunTrace 修改
 
 1. 去掉升级检测.
 2. 消除 string format 时的警告.
 3. 默认 DBUG 模式下的模拟器开启, 避免发版忘记关闭开关.
+4. 适配刘海屏模拟器
+5. 添加 `GLRUNTRACE_ENABLE` 开关, 真机上打开需要修改`Build Settings`-> `Preprocessor Macros` -> `Debug` ->  添加`GLRUNTRACE_ENABLE=1`
+
+
 
 ## 安装
 
+推荐:
+
 ```
-pod 'RunTrace', :git => "https://github.com/GrayLand119/RunTrace.git"
+source 'https://github.com/GrayLand119/GLSpecs.git'
+pod 'GLRunTrace'
+```
+
+或者
+
+```
+pod 'GLRunTrace', :git => "https://github.com/GrayLand119/GLRunTrace.git"
 ```
 
 ## 禁用/启用
@@ -21,10 +34,12 @@ pod 'RunTrace', :git => "https://github.com/GrayLand119/RunTrace.git"
 // RunTrace.h
 
 #if DEBUG
-    #if TARGET_IPHONE_SIMULATOR
-        #define RunTraceOpen 1 // 启用
+    #if GLRUNTRACE_ENABLE
+        #define RunTraceOpen 1
+    #elif TARGET_IPHONE_SIMULATOR
+        #define RunTraceOpen 1
     #else
-        #define RunTraceOpen 0 // 禁用
+        #define RunTraceOpen 0
     #endif
 #endif
 ```

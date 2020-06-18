@@ -7,14 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
-//#define RunTraceOpen 1
+
 #if DEBUG
-    #if TARGET_IPHONE_SIMULATOR
+    #if GLRUNTRACE_ENABLE
+        #define RunTraceOpen 1
+    #elif TARGET_IPHONE_SIMULATOR
         #define RunTraceOpen 1
     #else
         #define RunTraceOpen 0
     #endif
 #endif
+
 
 @interface RunTrace : UIView
 

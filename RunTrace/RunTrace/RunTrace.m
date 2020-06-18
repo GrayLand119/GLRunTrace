@@ -37,10 +37,10 @@
 {
     [self myMakeKeyAndVisible];
     if(self.frame.size.height>20)
-    {
+        {
         RunTrace *view=[[RunTrace alloc] init];
         [self addSubview:view];
-    }
+        }
 }
 
 @end
@@ -57,27 +57,27 @@
 {
     [self myDidAddSubview:subview];
     if(subview!=nil)
-    {
+        {
         [[NSNotificationCenter defaultCenter] postNotificationName:msgRunTraceAddSubView object:self userInfo:@{@"subview":subview}];
-    }
+        }
 }
 
 -(void)myWillRemoveSubview:(UIView *)subview
 {
     [self myWillRemoveSubview:subview];
     if(subview!=nil)
-    {
+        {
         [[NSNotificationCenter defaultCenter] postNotificationName:msgRunTraceRemoveSubView object:self userInfo:@{@"subview":subview}];
-    }
+        }
 }
 
 -(void)myWillMoveToSuperview:(UIView*)newSuperview
 {
     [self myWillMoveToSuperview:newSuperview];
     if(newSuperview==nil)
-    {
+        {
         [[NSNotificationCenter defaultCenter] postNotificationName:msgRunTraceRemoveView object:self];
-    }
+        }
 }
 @end
 #endif
@@ -107,7 +107,7 @@
 -(instancetype)init
 {
     if(self=[super init])
-    {
+        {
         self.frame=CGRectMake([UIScreen mainScreen].bounds.size.width-35, 100, 30, 30) ;
         self.layer.zPosition=FLT_MAX;
         UILabel *lb=[[UILabel alloc] initWithFrame:self.bounds];
@@ -125,7 +125,15 @@
         viewBound.layer.borderWidth=3;
         viewBound.layer.borderColor=[UIColor blackColor].CGColor;
         viewBound.layer.zPosition=FLT_MAX;
-        winInfo=[[UIWindow alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 50)];
+        CGFloat topOffset = 0;
+        if (@available(iOS 11.0, *)) {
+            if (UIApplication.sharedApplication.keyWindow.safeAreaInsets.bottom > 0) {
+                topOffset =
+                UIApplication.sharedApplication.keyWindow.safeAreaInsets.top;
+            }
+        }
+        
+        winInfo=[[UIWindow alloc] initWithFrame:CGRectMake(0, topOffset, [UIScreen mainScreen].bounds.size.width, 50)];
         winInfo.backgroundColor=[UIColor colorWithRed:0.000 green:0.898 blue:0.836 alpha:0.7];
         winInfo.hidden=YES;
         winInfo.windowLevel=UIWindowLevelAlert;
@@ -138,12 +146,12 @@
         lbInfo.userInteractionEnabled=YES;
         [lbInfo addGestureRecognizer:tap];
         [winInfo addSubview:lbInfo];
-        [self checkUpdate];
+//        [self checkUpdate];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleTraceView:) name:msgRunTraceView object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleTraceContraints:) name:msgRunTraceContraints object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleTraceAddSubView:) name:msgRunTraceAddSubView object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleTraceShow:) name:msgRunTraceShow object:nil];
-    }
+        }
     return self;
 }
 
@@ -160,9 +168,9 @@
     NSURLRequest *requst = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:10];
     [NSURLConnection sendAsynchronousRequest:requst queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
         if(connectionError!=nil)
-        {
+            {
             return;
-        }
+            }
         NSArray *arr = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
         version=[arr[0][@"name"] floatValue];
     }];
@@ -178,13 +186,13 @@
     UIView *viewSuper=nofi.object;
     UIView *view=nofi.userInfo[@"subview"];
     if([viewSuper isKindOfClass:[UIWindow class]] && view!=self)
-    {
+        {
         [viewSuper bringSubviewToFront:self];
         if(viewTraceHelp!=nil)
-        {
+            {
             [viewSuper bringSubviewToFront:viewTraceHelp];
+            }
         }
-    }
 }
 
 
@@ -208,39 +216,39 @@
     CGFloat constant=[dic[@"Constant"] floatValue];
     UIView *viewTo=((RunTraceObject*)dic[@"ToView"]).object;
     if(constant!=0)
-    {
+        {
         if([strType isEqualToString:@"Left"])
-        {
+            {
             lbLine.frame=CGRectMake(view.frame.origin.x-constant, view.frame.origin.y+view.frame.size.height/2-2, constant, 4);
-        }
+            }
         else if([strType isEqualToString:@"Right"])
-        {
+            {
             lbLine.frame=CGRectMake(view.frame.origin.x+view.frame.size.width, view.frame.origin.y+view.frame.size.height/2-2, constant, 4);
-        }
+            }
         else if([strType isEqualToString:@"Top"])
-        {
+            {
             lbLine.frame=CGRectMake(view.frame.origin.x+view.frame.size.width/2-2, view.frame.origin.y-constant, 4, constant);
-        }
+            }
         else if([strType isEqualToString:@"Bottom"])
-        {
+            {
             lbLine.frame=CGRectMake(view.frame.origin.x+view.frame.size.width/2-2, view.frame.origin.y+view.frame.size.height, 4, constant);
-        }
+            }
         else if([strType isEqualToString:@"Width"])
-        {
+            {
             lbLine.frame=CGRectMake(view.frame.origin.x,view.frame.origin.y+view.frame.size.height/2-2, view.frame.size.width, 4);
-        }
+            }
         else if([strType isEqualToString:@"Height"])
-        {
+            {
             lbLine.frame=CGRectMake(view.frame.origin.x+view.frame.size.width/2-2, view.frame.origin.y, 4, view.frame.size.height);
-        }
+            }
         else if([strType isEqualToString:@"CenterX"])
-        {
+            {
             lbLine.frame=CGRectMake(view.frame.origin.x+view.frame.size.width/2-constant, view.frame.origin.y+view.frame.size.height/2-2, constant, 4);
-        }
+            }
         else if([strType isEqualToString:@"CenterY"])
-        {
+            {
             lbLine.frame=CGRectMake(view.frame.origin.x+view.frame.size.width/2-2, view.frame.origin.y+view.frame.size.height/2-constant, 4, constant);
-        }
+            }
         [self.window addSubview:lbLine];
         CGRect p=[self.window convertRect:lbLine.frame fromView:view.superview];
         lbLine.frame=p;
@@ -251,9 +259,9 @@
             [lbLine removeFromSuperview];
         }];
         
-    }
+        }
     if(viewTo)
-    {
+        {
         UIView* viewToBound=[[UIView alloc] init];
         viewToBound.layer.masksToBounds=YES;
         viewToBound.layer.borderWidth=3;
@@ -268,7 +276,7 @@
         } completion:^(BOOL finished) {
             [viewToBound removeFromSuperview];
         }];
-    }
+        }
 }
 
 -(void)handleTraceView:(NSNotification*)nofi
@@ -289,10 +297,22 @@
 -(void)tapInfo
 {
     if(viewTraceHelp.superview)
-    {
+        {
         return;
+        }
+    
+    @try {
+        NSBundle *bundle = [NSBundle bundleWithIdentifier:@"org.cocoapods.GLRunTrace"];
+        if (bundle) {
+            viewTraceHelp = [[bundle loadNibNamed:@"RunTraceHelp" owner:nil options:nil] lastObject];
+        }
+    } @catch (NSException *exception) {
+        viewTraceHelp = nil;
     }
-    viewTraceHelp=[[[NSBundle mainBundle] loadNibNamed:@"RunTraceHelp" owner:nil options:nil] lastObject];
+    if (!viewTraceHelp) {
+        viewTraceHelp=[[NSBundle.mainBundle loadNibNamed:@"RunTraceHelp" owner:nil options:nil] lastObject];
+    }
+    
     viewTraceHelp.bounds=CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width-20, viewTraceHelp.bounds.size.height);
     viewTraceHelp.layer.zPosition=FLT_MAX;
     viewTraceHelp.viewHit=viewTouch;
@@ -325,9 +345,9 @@
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
     if(!bTouch)
-    {
+        {
         return;
-    }
+        }
     UITouch *touch=[touches anyObject];
     CGPoint point=[touch locationInView:self.window];
     self.frame=CGRectMake(point.x-left, point.y-top, self.frame.size.width, self.frame.size.height);
@@ -336,6 +356,7 @@
     CGRect frame=[self.window convertRect:view.bounds fromView:view];
     viewTouch=view;
     viewBound.frame=frame;
+    
     lbInfo.text=[NSString stringWithFormat:@"  %@ l:%0.1lf t:%0.1lf w:%0.1lf h:%0.1lf",NSStringFromClass([view class]),view.frame.origin.x,view.frame.origin.y,view.frame.size.width,view.frame.size.height];
     winInfo.alpha=1;
     winInfo.hidden=NO;
@@ -371,13 +392,13 @@
 - (UIViewController*)topViewController {
     UIViewController *vc=nil;
     if([UIApplication sharedApplication].keyWindow.rootViewController!=nil)
-    {
+        {
         vc=[UIApplication sharedApplication].keyWindow.rootViewController;
-    }
+        }
     else if([[[UIApplication sharedApplication] delegate] window].rootViewController!=nil)
-    {
+        {
         vc=[[[UIApplication sharedApplication] delegate] window].rootViewController;
-    }
+        }
     return [self topViewControllerWithRootViewController:vc];
 }
 
@@ -399,10 +420,10 @@
 -(void)hitTest:(UIView*)view Point:(CGPoint) point;
 {
     if([view isKindOfClass:[UIScrollView class]])
-    {
+        {
         point.x+=((UIScrollView*)view).contentOffset.x;
         point.y+=((UIScrollView*)view).contentOffset.y;
-    }
+        }
     if ([view pointInside:point withEvent:nil] &&
         (!view.hidden) &&
         (view.alpha >= 0.01f) && (view!=viewBound) && ![view isDescendantOfView:self]) {
