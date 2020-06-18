@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
-  s.name         = "RunTrace"
-  s.version      = "1.3"
+  s.name         = "GLRunTrace"
+  s.version      = "1.3.1"
   s.summary      = "RunTrace tracks every UI element, including origin, bounds, frame, superview, subview etc."
 
   s.description  = <<-DESC
@@ -11,12 +11,12 @@ Pod::Spec.new do |s|
                    line in your code.
                    DESC
 
-  s.homepage     = "https://github.com/GrayLand119/RunTrace"
+  s.homepage     = "https://github.com/GrayLand119/GLRunTrace"
   s.license      = { :type => "MIT", :file => "LICENSE" }
   s.author       = { "GrayLand119" => "" }
 
   s.ios.deployment_target = '8.0'
-  s.source       = { :git => "https://github.com/GrayLand119/RunTrace.git", :tag => '1.3'}
+  s.source       = { :git => "https://github.com/GrayLand119/GLRunTrace.git", :tag => s.version}
 
   s.source_files = "RunTrace/RunTrace/*.{h,m}"
   s.resources    = "RunTrace/RunTrace/*.xib"
