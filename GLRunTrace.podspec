@@ -12,13 +12,13 @@ Pod::Spec.new do |s|
                    DESC
 
   s.homepage     = "https://github.com/GrayLand119/GLRunTrace"
-  s.license      = { :type => "MIT", :file => "LICENSE" }
-  s.author       = { "GrayLand119" => "" }
-
-  s.ios.deployment_target = '8.0'
+  s.license      = "MIT"
+  s.author       = { "GrayLand" => "441726442@qq.com" }
+  s.platform = :ios, "8.0"
   s.source       = { :git => "https://github.com/GrayLand119/GLRunTrace.git", :tag => s.version}
-
   s.source_files = "RunTrace/RunTrace/*.{h,m}"
   s.resources    = "RunTrace/RunTrace/*.xib"
   s.requires_arc = true
+  s.frameworks = 'UIKit','Foundation'
 end
+  
