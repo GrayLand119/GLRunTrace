@@ -17,6 +17,10 @@
 
 ```
 source 'https://github.com/GrayLand119/GLSpecs.git'
+source 'https://github.com/CocoaPods/Specs.git'
+
+...
+
 pod 'GLRunTrace'
 ```
 
